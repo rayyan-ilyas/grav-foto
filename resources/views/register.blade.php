@@ -3,110 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar | Gravity Studio</title>
+    <title>Daftar</title>
 
     @vite('resources/css/app.css')
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        html, body { height: 100%; }
-        body {
-            background: radial-gradient(circle at top, #eef2ff, #f5f7fa 70%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            font-family: 'Inter', sans-serif;
+        /* Memastikan html dan body mengambil 100% tinggi layar */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
-        .halo::before {
+        
+        body {
+            background: radial-gradient(circle at top right, #eef2ff, #f8fafc 40%, #f1f5f9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+            overflow-x: hidden;
+        }
+
+        /* Perbaikan Glow: Menggunakan absolute terhadap body agar tidak menggeser card */
+        .halo-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .halo-bg::before {
             content: "";
             position: absolute;
-            top: -120px;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(99,102,241,0.28), transparent 70%);
-            filter: blur(40px);
-            z-index: -1;
+            top: 5%;
+            right: 5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent 70%);
+            filter: blur(80px);
+        }
+
+        .halo-bg::after {
+            content: "";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(199, 210, 254, 0.15), transparent 70%);
+            filter: blur(80px);
         }
     </style>
 </head>
 
-<body>
+<body class="antialiased p-6">
 
-    <div class="relative halo w-full max-w-md p-8 bg-white/70 backdrop-blur-xl rounded-2xl 
-                shadow-[0_0_80px_-20px_rgba(0,0,0,0.15)] border border-white/40">
+    <div class="halo-bg"></div>
 
-        <!-- Logo -->
-        <div class="flex flex-col items-center mb-8">
-            <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                <div class="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center 
-                     text-white font-bold text-2xl shadow-lg group-hover:scale-105 transition">
-                    G
+    <div class="relative z-10 w-full max-w-[480px] p-10 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-white/60">
+
+         <div class="flex flex-col items-center mb-10">
+            <a href="{{ url('/') }}" class="flex flex-col items-center gap-1 group">
+                <div class="w-24 h-24 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                    <img src="{{ asset('logo.png') }}" alt="Logo" class="max-w-full max-h-full object-contain">
                 </div>
 
-                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
-                    Gravity<span class="text-indigo-600">Studio</span>
-                </h1>
+                <div class="text-center">
+                    <h1 class="text-2xl font-black text-gray-900 tracking-tighter">
+                        Gravity <span class="text-indigo-600">Photography</span>
+                    </h1>
+                    <p class="mt-2 text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Sistem Reservasi</p>
+                </div>
             </a>
-
-            <p class="mt-3 text-gray-600 text-sm">
-                Buat akun baru untuk melakukan reservasi.
-            </p>
         </div>
-
-        <!-- REGISTER FORM -->
-        <form method="POST" action="{{ route('register.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('register.store') }}" class="space-y-5">
             @csrf
 
-            <!-- Nama -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap</label>
-                <input type="text" name="name" required
-                       class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur 
-                       shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
-                       placeholder="Nama lengkap Anda">
+            <div class="space-y-2">
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Nama Lengkap</label>
+                <input type="text" name="name" required placeholder="Nama lengkap Anda"
+                       class="w-full px-5 py-3.5 rounded-2xl border border-gray-100 bg-white/50 backdrop-blur-sm
+                       shadow-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 outline-none font-semibold text-gray-700 placeholder:text-gray-300">
             </div>
 
-            <!-- Nomor HP -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nomor HP</label>
-                <input type="text" name="phone" required
-                       class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur 
-                       shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
-                       placeholder="Nomor whatsapp / HP">
+            <div class="space-y-2">
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Nomor WhatsApp</label>
+                <input type="text" name="phone" required placeholder="0812xxxx"
+                       class="w-full px-5 py-3.5 rounded-2xl border border-gray-100 bg-white/50 backdrop-blur-sm
+                       shadow-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 outline-none font-semibold text-gray-700 placeholder:text-gray-300">
             </div>
 
-            <!-- Email -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                <input type="email" name="email" required
-                       class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur 
-                       shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
-                       placeholder="Alamat email aktif">
+            <div class="space-y-2">
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Alamat Email</label>
+                <input type="email" name="email" required placeholder="Masukkan email disini..."
+                       class="w-full px-5 py-3.5 rounded-2xl border border-gray-100 bg-white/50 backdrop-blur-sm
+                       shadow-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 outline-none font-semibold text-gray-700 placeholder:text-gray-300">
             </div>
 
-            <!-- Password -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
-                <input type="password" name="password" required
-                       class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 backdrop-blur 
-                       shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition"
-                       placeholder="Minimal 8 karakter">
+            <div class="space-y-2">
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Kata Sandi</label>
+                <input type="password" name="password" required placeholder="Minimal 8 karakter"
+                       class="w-full px-5 py-3.5 rounded-2xl border border-gray-100 bg-white/50 backdrop-blur-sm
+                       shadow-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300 outline-none font-semibold text-gray-700 placeholder:text-gray-300">
             </div>
 
-            <!-- Tombol -->
-            <button type="submit"
-                    class="w-full py-3 rounded-xl bg-indigo-600 text-white font-bold text-base
-                    shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all duration-150">
-                Daftar
-            </button>
+            <div class="pt-4">
+                <button type="submit"
+                        class="w-full py-4 rounded-2xl bg-gray-900 text-white font-black text-sm uppercase tracking-widest
+                        shadow-xl shadow-gray-200 hover:bg-black hover:shadow-2xl active:scale-[0.98] transition-all duration-300">
+                    Daftar Sekarang
+                </button>
+            </div>
         </form>
 
-        <!-- Link Login -->
-        <div class="mt-8 text-center text-sm text-gray-600">
-            Sudah punya akun?
-            <a href="{{ url('/login') }}" class="font-bold text-indigo-600 hover:text-indigo-800">
-                Masuk
-            </a>
+        <div class="mt-10 text-center">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-tight">
+                Sudah punya akun? 
+                <a href="{{ url('/login') }}" class="text-indigo-600 hover:text-indigo-800 ml-1 transition-colors">
+                    Masuk Di Sini
+                </a>
+            </p>
         </div>
     </div>
 
