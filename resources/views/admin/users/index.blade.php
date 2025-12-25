@@ -14,8 +14,10 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-10 px-4 md:px-8">
-        <div class="max-w-7xl mx-auto">
+    <div class="min-h-screen">
+        @include('admin.partials.header')
+
+        <div class="max-w-7xl mx-auto py-10 px-4 md:px-8">
             
             <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>

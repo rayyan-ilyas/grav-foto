@@ -15,33 +15,7 @@
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
     <div class="min-h-screen">
-        <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 flex items-center justify-center">
-                        <img src="{{ asset('logo.png') }}" alt="Logo" class="max-w-full max-h-full object-contain">
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-extrabold tracking-tight text-gray-900 leading-none">Admin Panel</h1>
-                        <p class="text-[11px] text-gray-400 mt-1 font-bold uppercase tracking-wider">Kelola Reservasi</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('admin.dashboard') }}" class="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
-                        ← Dashboard
-                    </a>
-                    <form action="{{ route('admin.logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="p-2.5 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </header>
+        @include('admin.partials.header')
 
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="mb-8">
@@ -59,7 +33,7 @@
             @endif
 
             <div class="bg-white rounded-4xl border border-gray-100 shadow-sm p-8 mb-8">
-                <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <form method="GET" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
                     <div class="space-y-2">
                         <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Status Foto</label>
                         <select name="status" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-bold text-sm text-gray-700">
@@ -88,13 +62,53 @@
                             <option value="no" {{ request('approved') == 'no' ? 'selected' : '' }}>Belum Disetujui</option>
                         </select>
                     </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all font-bold shadow-lg shadow-indigo-100 active:scale-95 text-sm">
+                    <div class="space-y-2">
+                        <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Tanggal Dari</label>
+                        <input type="date" name="date_from" value="{{ request('date_from') }}"
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-bold text-sm text-gray-700">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Tanggal Sampai</label>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}"
+                               class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none font-bold text-sm text-gray-700">
+                    </div>
+                    <div class="flex items-end gap-3">
+                        <a href="{{ route('admin.reservations.index') }}" class="flex-1 py-3.5 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 transition-all font-bold text-center text-sm">
+                            Reset Filter
+                        </a>
+                        <button type="submit" class="flex-1 py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all font-bold shadow-lg shadow-indigo-100 active:scale-95 text-sm">
                             Terapkan Filter
                         </button>
                     </div>
                 </form>
             </div>
+
+            @php
+                $activeFilters = [];
+                if (request('status')) $activeFilters[] = 'Status: ' . $statuses->find(request('status'))?->name;
+                if (request('payment')) $activeFilters[] = 'Pembayaran: ' . ucfirst(request('payment'));
+                if (request('approved')) $activeFilters[] = 'Approval: ' . (request('approved') == 'yes' ? 'Sudah Disetujui' : 'Belum Disetujui');
+                if (request('date_from')) $activeFilters[] = 'Dari: ' . date('d/m/Y', strtotime(request('date_from')));
+                if (request('date_to')) $activeFilters[] = 'Sampai: ' . date('d/m/Y', strtotime(request('date_to')));
+            @endphp
+
+            @if($activeFilters)
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                        </svg>
+                        <span class="text-sm font-bold text-indigo-700">Filter Aktif:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($activeFilters as $filter)
+                            <span class="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold">
+                                {{ $filter }}
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
@@ -125,7 +139,44 @@
                                     </div>
                                 </td>
                                 <td class="py-6 px-4 text-center">
-                                    <span class="text-sm font-bold text-gray-700">{{ $reservation->photoPackage->name }}</span>
+                                    <div>
+                                        <span class="text-sm font-bold text-gray-700">{{ $reservation->photoPackage->name }}</span>
+                                        <div class="mt-1">
+                                            <span class="inline-block px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-full text-[9px] font-extrabold uppercase tracking-wider border border-indigo-100">
+                                                @switch($reservation->photoPackage->category)
+                                                    @case('corporate')
+                                                        Corporate
+                                                        @break
+                                                    @case('ultah')
+                                                        Ulang Tahun
+                                                        @break
+                                                    @case('dokumentasi')
+                                                        Dokumentasi
+                                                        @break
+                                                    @case('lamaran')
+                                                        Lamaran
+                                                        @break
+                                                    @case('martupol')
+                                                        Martupol
+                                                        @break
+                                                    @case('personal')
+                                                        Personal
+                                                        @break
+                                                    @case('keluarga')
+                                                        Keluarga
+                                                        @break
+                                                    @case('maternity')
+                                                        Maternity
+                                                        @break
+                                                    @case('prewedding')
+                                                        Pre-Wedding
+                                                        @break
+                                                    @default
+                                                        {{ $reservation->photoPackage->category ?? 'General' }}
+                                                @endswitch
+                                            </span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="py-6 px-4">
                                     <div class="flex justify-center">

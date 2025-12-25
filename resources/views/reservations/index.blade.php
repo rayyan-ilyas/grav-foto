@@ -14,7 +14,8 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-12 px-4 md:px-8">
+    @include('partials.header')
+    <div class="min-h-screen pt-24 px-4 md:px-8">
         <div class="max-w-5xl mx-auto">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
@@ -78,6 +79,9 @@
                                         <div class="space-y-1">
                                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Paket Layanan</p>
                                             <p class="text-sm font-bold text-gray-900">{{ $reservation->photoPackage->name }}</p>
+                                            @if($reservation->photoPackage->category)
+                                                <p class="text-xs font-medium text-indigo-600 uppercase tracking-wide">{{ $reservation->photoPackage->category }}</p>
+                                            @endif
                                         </div>
                                         <div class="space-y-1">
                                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Atas Nama</p>

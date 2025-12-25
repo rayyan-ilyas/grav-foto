@@ -24,13 +24,22 @@ class PhotoPackageController extends Controller
     // Simpan paket foto baru ke database
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'duration_minutes' => 'required|integer|min:1',
             'is_active' => 'boolean',
-        ]);
+            'location' => 'required|in:indoor,outdoor',
+            'category' => 'required|string|in:corporate,ultah,dokumentasi,lamaran,martupol,personal,keluarga,maternity,wedding',
+        ];
+
+        // Add subcategory validation for wedding
+        if ($request->category === 'wedding') {
+            $rules['subcategory'] = 'required|in:prewedding,akad,resepsi';
+        }
+
+        $validated = $request->validate($rules);
 
         PhotoPackage::create($validated);
 
@@ -47,13 +56,22 @@ class PhotoPackageController extends Controller
     // Update paket foto di database
     public function update(Request $request, PhotoPackage $package)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'duration_minutes' => 'required|integer|min:1',
             'is_active' => 'boolean',
-        ]);
+            'location' => 'required|in:indoor,outdoor',
+            'category' => 'required|string|in:corporate,ultah,dokumentasi,lamaran,martupol,personal,keluarga,maternity,wedding',
+        ];
+
+        // Add subcategory validation for wedding
+        if ($request->category === 'wedding') {
+            $rules['subcategory'] = 'required|in:prewedding,akad,resepsi';
+        }
+
+        $validated = $request->validate($rules);
 
         $package->update($validated);
 

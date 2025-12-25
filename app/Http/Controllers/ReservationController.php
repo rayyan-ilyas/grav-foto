@@ -36,10 +36,9 @@ class ReservationController extends Controller
     // Store reservasi
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'photo_package_id' => 'required|exists:photo_packages,id',
             'name' => 'required|string|max:255',
-            'address' => 'required|string',
             'phone' => 'required|string|max:20',
             'number_of_people' => 'required|integer|min:1',
             'photo_date' => 'required|date|after:today',
@@ -48,7 +47,24 @@ class ReservationController extends Controller
             'payment_type' => 'required|in:dp,lunas',
             'proof_of_payment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'notes' => 'nullable|string',
-        ]);
+        ];
+
+        // Add subcategory validation for wedding
+        if ($request->category_filter === 'wedding') {
+            $rules['subcategory'] = 'required|in:prewedding,akad,resepsi';
+        }
+
+        // Add studio validation for indoor
+        if ($request->location_filter === 'indoor') {
+            $rules['is_studio'] = 'required|boolean';
+        }
+
+        // Address is required unless it's indoor studio shoot
+        if ($request->location_filter !== 'indoor' || $request->is_studio != '1') {
+            $rules['address'] = 'required|string';
+        }
+
+        $validated = $request->validate($rules);
 
         // Ambil package
         $package = PhotoPackage::findOrFail($validated['photo_package_id']);
@@ -66,11 +82,13 @@ class ReservationController extends Controller
             'reservation_code' => Reservation::generateReservationCode(),
             'user_id' => Auth::id(),
             'photo_package_id' => $validated['photo_package_id'],
+            'subcategory' => $validated['subcategory'] ?? null,
+            'is_studio' => $validated['is_studio'] ?? null,
             'payment_method' => $validated['payment_method'],
             'payment_type' => $validated['payment_type'],
             'proof_of_payment' => $proofPath,
             'name' => $validated['name'],
-            'address' => $validated['address'],
+            'address' => $validated['address'] ?? null,
             'phone' => $validated['phone'],
             'number_of_people' => $validated['number_of_people'],
             'photo_date' => $validated['photo_date'],

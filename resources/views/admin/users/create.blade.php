@@ -14,8 +14,10 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-12 px-4 md:px-8">
-        <div class="max-w-3xl mx-auto">
+    <div class="min-h-screen">
+        @include('admin.partials.header')
+
+        <div class="max-w-3xl mx-auto py-12 px-4 md:px-8">
             
             <div class="mb-8">
                 <a href="{{ route('admin.users.index') }}" class="inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-all group">

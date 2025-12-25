@@ -28,148 +28,7 @@
 </head>
 <body class="bg-white text-gray-900">
 
-<!-- ================= HEADER ================= -->
-<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-6 h-20 grid grid-cols-3 items-center">
-
-        <!-- KIRI: LOGO -->
-        <a href="/" class="flex items-center">
-            <img src="{{ asset('logo.png') }}" class="h-10 w-auto" alt="Logo">
-        </a>
-
-        <!-- TENGAH: MENU DESKTOP -->
-        <nav class="hidden md:flex justify-center space-x-10 text-sm font-semibold text-gray-600">
-            <a href="#" class="hover:text-indigo-600 transition">Beranda</a>
-            <a href="#tracking" class="hover:text-indigo-600 transition">Lacak Reservasi</a>
-            <a href="https://wa.me/62xxxxxxxx" class="hover:text-indigo-600 transition">Hubungi</a>
-        </nav>
-
-        <!-- KANAN: PROFIL + HAMBURGER -->
-        <div class="flex items-center justify-end gap-4">
-
-            @auth
-            <!-- PROFIL -->
-            <div class="relative">
-                <button id="profile-toggle"
-                        class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600
-                               flex items-center justify-center hover:bg-indigo-200 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M5.121 17.804A9 9 0 1118.879 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                </button>
-
-                <!-- DROPDOWN -->
-                <div id="profile-menu" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-gray-50 bg-gray-50/50 mb-1">
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Akun Saya</p>
-                        <p class="text-sm font-bold text-gray-800 truncate">{{ Auth::user()->name }}</p>
-                    </div>
-
-                    <div class="p-1">
-                        <a href="{{ route('reservations.index') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition group">
-                            <div class="p-2 bg-gray-100 rounded-lg group-hover:bg-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                </svg>
-                            </div>
-                            <span class="font-semibold">Riwayat Reservasi</span>
-                        </a>
-
-                        <a href="{{ route('profile.show') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition group">
-                            <div class="p-2 bg-gray-100 rounded-lg group-hover:bg-white transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                </svg>
-                            </div>
-                            <span class="font-semibold">Profil Saya</span>
-                        </a>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 rounded-xl hover:bg-red-50 transition group">
-                                <div class="p-2 bg-red-50 rounded-lg group-hover:bg-white transition">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                    </svg>
-                                </div>
-                                <span class="font-semibold">Logout</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            @else
-            <!-- TOMBOL MASUK (GUEST) -->
-            <a href="{{ route('login') }}"
-               class="px-6 py-2.5 rounded-full bg-indigo-600 text-white text-sm font-bold
-                      hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
-                Masuk
-            </a>
-            @endauth
-
-            <!-- HAMBURGER MOBILE -->
-            <button id="menu-toggle" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- MENU MOBILE -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-        <nav class="flex flex-col px-6 py-4 space-y-4 text-sm font-semibold text-gray-600">
-            <a href="#" class="hover:text-indigo-600">Beranda</a>
-            <a href="#tracking" class="hover:text-indigo-600">Lacak Reservasi</a>
-            <a href="https://wa.me/62xxxxxxxx" class="hover:text-indigo-600">Hubungi</a>
-        </nav>
-    </div>
-</header>
-
-<!-- ================= SCRIPT ================= -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const profileToggle = document.getElementById('profile-toggle');
-    const profileMenu = document.getElementById('profile-menu');
-
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
-    if (profileToggle) {
-        profileToggle.addEventListener('click', () => {
-            profileMenu.classList.toggle('hidden');
-        });
-    }
-
-    document.addEventListener('click', (e) => {
-        if (profileMenu && !profileToggle.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-        }
-    });
-});
-</script>
-
-<script>
-function handleReservation() {
-    @auth
-        window.location.href = '{{ route("reservations.create") }}';
-    @else
-        alert('Silakan login terlebih dahulu untuk melakukan reservasi.');
-        window.location.href = '{{ route("login") }}';
-    @endauth
-}
-</script>
+@include('partials.header')
 
 <section class="hero-background h-[600px] flex items-center pt-20">
     <div class="max-w-7xl mx-auto px-6 w-full text-center text-white">
@@ -179,12 +38,18 @@ function handleReservation() {
         <form action="{{ route('reservations.create') }}" method="GET" class="bg-white p-2 rounded-2xl shadow-2xl max-w-4xl mx-auto flex flex-col md:row text-gray-800">
             <div class="flex flex-col md:flex-row flex-1">
                 <div class="flex-1 px-6 py-3 text-left border-r border-gray-100">
-                    <label class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Layanan</label>
-                    <select name="photo_package_id" class="w-full font-semibold bg-transparent focus:outline-none">
-                        <option value="">Pilih Layanan</option>
-                        @foreach(\App\Models\PhotoPackage::where('is_active', true)->get() as $package)
-                            <option value="{{ $package->id }}">{{ $package->name }}</option>
-                        @endforeach
+                    <label class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Kategori</label>
+                    <select name="category" class="w-full font-semibold bg-transparent focus:outline-none">
+                        <option value="">Pilih Kategori</option>
+                        <option value="corporate">Corporate</option>
+                        <option value="ultah">Ulang Tahun</option>
+                        <option value="dokumentasi">Dokumentasi</option>
+                        <option value="lamaran">Lamaran</option>
+                        <option value="martupol">Martupol</option>
+                        <option value="personal">Personal</option>
+                        <option value="keluarga">Keluarga</option>
+                        <option value="maternity">Maternity</option>
+                        <option value="prewedding">Pre-Wedding</option>
                     </select>
                 </div>
                 <div class="flex-1 px-6 py-3 text-left border-r border-gray-100">
@@ -201,7 +66,7 @@ function handleReservation() {
     </div>
 </section>
 
-<section class="py-24 bg-gray-50">
+<section id="tracking" class="py-24 bg-gray-50">
     <div class="max-w-3xl mx-auto px-6 text-center">
         <div class="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full mb-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -260,39 +125,76 @@ function handleReservation() {
             <p class="text-gray-500">Berbagai paket foto yang disesuaikan dengan kebutuhan Anda.</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-6">
-            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:bg-indigo-600 group-hover:text-white transition">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @foreach($packages as $package)
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition group">
+                    <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">{{ $package->name }}</h4>
+                    <p class="text-sm text-gray-500 mb-4">{!! nl2br(e($package->description)) !!}</p>
+                    <div class="mb-4">
+                        <span class="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                            @switch($package->category)
+                                @case('corporate')
+                                    Corporate
+                                    @break
+                                @case('ultah')
+                                    Ulang Tahun
+                                    @break
+                                @case('dokumentasi')
+                                    Dokumentasi
+                                    @break
+                                @case('lamaran')
+                                    Lamaran
+                                    @break
+                                @case('martupol')
+                                    Martupol
+                                    @break
+                                @case('personal')
+                                    Personal
+                                    @break
+                                @case('keluarga')
+                                    Keluarga
+                                    @break
+                                @case('maternity')
+                                    Maternity
+                                    @break
+                                @case('prewedding')
+                                    Pre-Wedding
+                                    @break
+                                @default
+                                    {{ $package->category ?? 'General' }}
+                            @endswitch
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-indigo-600 font-extrabold text-lg">Rp {{ number_format($package->price, 0, ',', '.') }}</p>
+                            <p class="text-xs text-gray-400">{{ $package->duration_minutes }} menit</p>
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            @if($package->location == 'indoor')
+                                ● Indoor
+                            @else
+                                ● Outdoor
+                            @endif
+                        </div>
+                    </div>
                 </div>
-                <h4 class="text-xl font-bold mb-2">Prewedding</h4>
-                <p class="text-sm text-gray-500 mb-6">Abadikan kisah kasih Anda dengan tema romantis.</p>
-                <p class="text-indigo-600 font-extrabold text-lg">Rp 2.5jt</p>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-6">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-                </div>
-                <h4 class="text-xl font-bold mb-2">Keluarga</h4>
-                <p class="text-sm text-gray-500 mb-6">Momen hangat bersama keluarga tercinta.</p>
-                <p class="text-indigo-600 font-extrabold text-lg">Rp 1.5jt</p>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm10 3h-8v-2h8v2zm0-4h-8v-2h8v2z"/></svg>
-                </div>
-                <h4 class="text-xl font-bold mb-2">Produk</h4>
-                <p class="text-sm text-gray-500 mb-6">Tingkatkan penjualan dengan foto katalog profesional.</p>
-                <p class="text-indigo-600 font-extrabold text-lg">Rp 800rb</p>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center text-pink-600 mb-6">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
-                <h4 class="text-xl font-bold mb-2">Potret</h4>
-                <p class="text-sm text-gray-500 mb-6">Sesi personal untuk kebutuhan branding & CV.</p>
-                <p class="text-indigo-600 font-extrabold text-lg">Rp 1.2jt</p>
-            </div>
+            @endforeach
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{{ route('packages.index') }}" 
+               class="inline-flex items-center px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+                Lihat Semua Paket
+            </a>
         </div>
     </div>
 </section>

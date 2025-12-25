@@ -34,6 +34,15 @@ class ReservationController extends Controller
             }
         }
 
+        // Filter by date range
+        if ($request->has('date_from') && $request->date_from != '') {
+            $query->whereDate('photo_date', '>=', $request->date_from);
+        }
+
+        if ($request->has('date_to') && $request->date_to != '') {
+            $query->whereDate('photo_date', '<=', $request->date_to);
+        }
+
         $reservations = $query->orderBy('created_at', 'desc')->paginate(20);
         $statuses = ReservationStatus::orderBy('order')->get();
 

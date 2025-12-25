@@ -18,8 +18,10 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-12 px-4 md:px-8">
-        <div class="max-w-7xl mx-auto">
+    <div class="min-h-screen">
+        @include('admin.partials.header')
+
+        <div class="max-w-7xl mx-auto px-6 py-10">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                 <div>
@@ -75,10 +77,55 @@
                             </div>
                         </div>
 
+                        <div class="mb-4">
+                            <span class="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-extrabold uppercase tracking-wider border border-indigo-100">
+                                @switch($package->category)
+                                    @case('corporate')
+                                        Corporate
+                                        @break
+                                    @case('ultah')
+                                        Ulang Tahun
+                                        @break
+                                    @case('dokumentasi')
+                                        Dokumentasi
+                                        @break
+                                    @case('lamaran')
+                                        Lamaran
+                                        @break
+                                    @case('martupol')
+                                        Martupol
+                                        @break
+                                    @case('personal')
+                                        Personal
+                                        @break
+                                    @case('keluarga')
+                                        Keluarga
+                                        @break
+                                    @case('maternity')
+                                        Maternity
+                                        @break
+                                    @case('wedding')
+                                        Wedding
+                                        @break
+                                    @default
+                                        {{ $package->category ?? 'General' }}
+                                @endswitch
+                                @if($package->subcategory)
+                                    <span class="text-[8px] block mt-0.5 opacity-70">
+                                        @switch($package->subcategory)
+                                            @case('prewedding') Pre-Wedding
+                                            @case('akad') Akad Nikah
+                                            @case('resepsi') Resepsi
+                                        @endswitch
+                                    </span>
+                                @endif
+                            </span>
+                        </div>
+
                         <div class="mb-8">
                             <h3 class="text-2xl font-extrabold text-gray-900 group-hover:text-indigo-600 transition-colors mb-2">{{ $package->name }}</h3>
                             <p class="text-gray-500 text-sm leading-relaxed line-clamp-3 font-medium">
-                                {{ $package->description }}
+                                {!! nl2br(e($package->description)) !!}
                             </p>
                         </div>
 
@@ -125,5 +172,7 @@
             @endif
         </div>
     </div>
+</body>
+</html>
 </body>
 </html>

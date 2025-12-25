@@ -23,13 +23,22 @@ use App\Http\Controllers\Admin\AlbumController;
 */
 
 // Public routes
+use App\Models\Album;
+
 Route::get('/galeri', function () {
-    return view('galeri');
+    $albums = Album::where('is_public', true)->with('photos')->orderBy('created_at', 'desc')->get();
+    return view('galeri', compact('albums'));
 })->name('galeri');
 
 Route::get('/', function () {
-    return view('welcome');
+    $packages = \App\Models\PhotoPackage::where('is_active', true)->orderBy('name')->take(4)->get();
+    return view('welcome', compact('packages'));
 })->name('dashboard');
+
+Route::get('/paket', function () {
+    $packages = \App\Models\PhotoPackage::where('is_active', true)->orderBy('name')->get();
+    return view('packages', compact('packages'));
+})->name('packages.index');
 
 // User Authentication routes
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -80,6 +89,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Albums
     Route::resource('albums', AlbumController::class);
+    Route::delete('albums/{album}/photos/{photo}', [AlbumController::class, 'destroyPhoto'])->name('albums.photos.destroy');
     
     // Users Management
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class);

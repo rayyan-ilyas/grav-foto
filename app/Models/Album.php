@@ -13,6 +13,7 @@ class Album extends Model
         'reservation_id',
         'title',
         'description',
+        'category',
         'cover_image',
         'is_public',
     ];

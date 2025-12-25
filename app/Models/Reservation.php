@@ -13,6 +13,8 @@ class Reservation extends Model
         'reservation_code',
         'user_id',
         'photo_package_id',
+        'subcategory',
+        'is_studio',
         'payment_method',
         'payment_type',
         'proof_of_payment',

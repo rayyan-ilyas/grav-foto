@@ -65,7 +65,11 @@
                             <div>
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Data Pemesan</p>
                                 <h4 class="text-lg font-bold text-gray-900 leading-tight">{{ $reservation->name }}</h4>
-                                <p class="text-gray-500 text-sm mt-1 leading-relaxed">{{ $reservation->address }}</p>
+                                @if($reservation->address)
+                                    <p class="text-gray-500 text-sm mt-1 leading-relaxed">{{ $reservation->address }}</p>
+                                @else
+                                    <p class="text-gray-500 text-sm mt-1 leading-relaxed italic">Foto di studio (tidak memerlukan alamat)</p>
+                                @endif
                                 <p class="text-gray-900 text-sm font-bold mt-2">{{ $reservation->phone }}</p>
                             </div>
                             
@@ -87,7 +91,12 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                         </div>
-                                        <span class="text-sm font-bold text-gray-900">{{ $reservation->photoPackage->name }}</span>
+                                        <div>
+                                            <span class="text-sm font-bold text-gray-900">{{ $reservation->photoPackage->name }}</span>
+                                            @if($reservation->photoPackage->category)
+                                                <p class="text-xs font-medium text-indigo-600 uppercase tracking-wide">{{ $reservation->photoPackage->category }}</p>
+                                            @endif
+                                        </div>
                                     </div>
                                     <div class="flex items-center gap-3">
                                         <div class="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-indigo-600">
@@ -113,6 +122,33 @@
                                         </div>
                                         <span class="text-sm font-bold text-gray-900">{{ $reservation->number_of_people }} Orang</span>
                                     </div>
+                                    @if($reservation->subcategory)
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-indigo-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-bold text-gray-900">
+                                            @if($reservation->subcategory == 'prewedding') Pre-Wedding
+                                            @elseif($reservation->subcategory == 'akad') Akad Nikah
+                                            @elseif($reservation->subcategory == 'resepsi') Resepsi
+                                            @else {{ ucfirst($reservation->subcategory) }} @endif
+                                        </span>
+                                    </div>
+                                    @endif
+                                    @if($reservation->is_studio !== null)
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-indigo-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-bold text-gray-900">
+                                            {{ $reservation->is_studio ? 'Foto di Studio' : 'Foto di Lokasi' }}
+                                        </span>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

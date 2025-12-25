@@ -14,8 +14,11 @@
     </style>
 </head>
 <body class="bg-gray-50 text-[#1F2937]">
-    <div class="min-h-screen py-8 px-4">
-        <div class="max-w-2xl mx-auto">
+    <div class="min-h-screen">
+        @include('admin.partials.header')
+
+        <div class="min-h-screen py-8 px-4">
+            <div class="max-w-2xl mx-auto">
             <div class="mb-6">
                 <a href="{{ route('admin.packages.index') }}" class="text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-2 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,6 +92,49 @@
                         <label for="is_active" class="ml-3 text-sm font-bold text-gray-700 cursor-pointer">Paket Aktif & Tampilkan di Katalog</label>
                     </div>
 
+                    <div class="pt-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi Paket</label>
+                        <div class="flex items-center gap-6">
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="location" value="indoor" {{ old('location', $package->location ?? 'indoor') == 'indoor' ? 'checked' : '' }} class="form-radio text-indigo-600" />
+                                <span class="ml-2 text-sm font-bold text-gray-700">● Indoor</span>
+                            </label>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="location" value="outdoor" {{ old('location', $package->location) == 'outdoor' ? 'checked' : '' }} class="form-radio text-indigo-600" />
+                                <span class="ml-2 text-sm font-bold text-gray-700">● Outdoor</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="category" class="block text-sm font-bold text-gray-700 mb-2">Kategori Paket</label>
+                        <select name="category" id="category" required
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none">
+                            <option value="">Pilih Kategori Paket</option>
+                            <option value="corporate" {{ old('category', $package->category) == 'corporate' ? 'selected' : '' }}>Corporate</option>
+                            <option value="ultah" {{ old('category', $package->category) == 'ultah' ? 'selected' : '' }}>Ulang Tahun</option>
+                            <option value="dokumentasi" {{ old('category', $package->category) == 'dokumentasi' ? 'selected' : '' }}>Dokumentasi</option>
+                            <option value="lamaran" {{ old('category', $package->category) == 'lamaran' ? 'selected' : '' }}>Lamaran</option>
+                            <option value="martupol" {{ old('category', $package->category) == 'martupol' ? 'selected' : '' }}>Martupol</option>
+                            <option value="personal" {{ old('category', $package->category) == 'personal' ? 'selected' : '' }}>Personal</option>
+                            <option value="keluarga" {{ old('category', $package->category) == 'keluarga' ? 'selected' : '' }}>Keluarga</option>
+                            <option value="maternity" {{ old('category', $package->category) == 'maternity' ? 'selected' : '' }}>Maternity</option>
+                            <option value="wedding" {{ old('category', $package->category) == 'wedding' ? 'selected' : '' }}>Wedding</option>
+                        </select>
+                    </div>
+
+                    <!-- WEDDING SUBCATEGORY -->
+                    <div id="wedding_subcategory_field" class="hidden">
+                        <label for="subcategory" class="block text-sm font-bold text-gray-700 mb-2">Sub-Kategori Wedding</label>
+                        <select name="subcategory" id="subcategory"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none">
+                            <option value="">Pilih Sub-Kategori</option>
+                            <option value="prewedding" {{ old('subcategory', $package->subcategory) == 'prewedding' ? 'selected' : '' }}>Pre-Wedding</option>
+                            <option value="akad" {{ old('subcategory', $package->subcategory) == 'akad' ? 'selected' : '' }}>Akad Nikah</option>
+                            <option value="resepsi" {{ old('subcategory', $package->subcategory) == 'resepsi' ? 'selected' : '' }}>Resepsi</option>
+                        </select>
+                    </div>
+
                     <div class="flex gap-4 pt-4">
                         <a href="{{ route('admin.packages.index') }}" 
                            class="flex-1 px-6 py-4 border border-gray-200 text-gray-500 rounded-xl hover:bg-gray-100 transition text-center font-bold">
@@ -156,7 +202,28 @@
             priceDisplay.value = formatRupiah(cleanValue);
             priceHidden.value = cleanValue; // Update kembali hidden value agar bersih
         }
+
+        // Subcategory toggle functionality
+        const categorySelect = document.getElementById('category');
+        const subcategoryField = document.getElementById('wedding_subcategory_field');
+        const subcategorySelect = document.getElementById('subcategory');
+
+        function toggleSubcategoryField() {
+            if (categorySelect.value === 'wedding') {
+                subcategoryField.classList.remove('hidden');
+                subcategorySelect.required = true;
+            } else {
+                subcategoryField.classList.add('hidden');
+                subcategorySelect.required = false;
+                subcategorySelect.value = '';
+            }
+        }
+
+        categorySelect.addEventListener('change', toggleSubcategoryField);
+        toggleSubcategoryField(); // Check on page load
     });
 </script>
+        </div>
+    </div>
 </body>
 </html>

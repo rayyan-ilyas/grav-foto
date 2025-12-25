@@ -15,40 +15,7 @@
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
     <div class="min-h-screen">
-        <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-4">
-    <div class="w-12 h-12 flex items-center justify-center">
-        <img src="{{ asset('logo.png') }}" 
-             alt="Logo Gravity Studio" 
-             class="max-w-full max-h-full object-contain">
-    </div>
-    <div>
-        <h1 class="text-lg font-extrabold tracking-tight text-gray-900 leading-none">Admin Panel</h1>
-        <p class="text-[10px] text-gray-400 mt-1 font-bold uppercase tracking-wider">Gravity Photography</p>
-    </div>
-</div>
-                
-                <div class="flex items-center gap-6">
-                    @auth
-                    <div class="hidden md:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-2xl border border-gray-100">
-                        <div class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold uppercase">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
-                        <span class="text-sm font-bold text-gray-700">{{ Auth::user()->name }}</span>
-                    </div>
-                    <form action="{{ route('admin.logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="p-2.5 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                        </button>
-                    </form>
-                    @endauth
-                </div>
-            </div>
-        </header>
+        @include('admin.partials.header')
 
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -110,7 +77,7 @@
                     <div class="w-1.5 h-8 bg-indigo-600 rounded-full"></div>
                     <h2 class="text-2xl font-black text-gray-900 tracking-tight">Navigasi Utama</h2>
                 </div>
-                <div class="grid grid-cols-2 lg:grid-cols-5 gap-6">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                     <a href="{{ route('admin.reservations.index') }}" class="group bg-white p-6 rounded-3xl border border-gray-100 hover:border-indigo-600 transition-all duration-300 flex flex-col items-center text-center shadow-sm hover:shadow-lg">
                         <div class="w-16 h-16 bg-indigo-50 text-3xl rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:scale-110 transition-all">📅</div>
                         <span class="font-bold text-gray-900">Reservasi</span>
@@ -126,11 +93,6 @@
                         <span class="font-bold text-gray-900">Klien</span>
                         <span class="text-[10px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Kelola Akun</span>
                     </a>
-                    <a href="{{ route('admin.statuses.index') }}" class="group bg-white p-6 rounded-3xl border border-gray-100 hover:border-blue-600 transition-all duration-300 flex flex-col items-center text-center shadow-sm hover:shadow-lg">
-                        <div class="w-16 h-16 bg-blue-50 text-3xl rounded-2xl flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:scale-110 transition-all">🏷️</div>
-                        <span class="font-bold text-gray-900">Status</span>
-                        <span class="text-[10px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Workflow</span>
-                    </a>
                     <a href="{{ route('admin.albums.index') }}" class="group bg-white p-6 rounded-3xl border border-gray-100 hover:border-pink-600 transition-all duration-300 flex flex-col items-center text-center shadow-sm hover:shadow-lg">
                         <div class="w-16 h-16 bg-pink-50 text-3xl rounded-2xl flex items-center justify-center mb-4 group-hover:bg-pink-600 group-hover:scale-110 transition-all">🖼️</div>
                         <span class="font-bold text-gray-900">Album</span>
@@ -145,7 +107,7 @@
                         <h2 class="text-2xl font-black text-gray-900 tracking-tight leading-none">Reservasi Terbaru</h2>
                         <p class="text-sm text-gray-400 mt-2 font-medium">Update pemesanan yang baru saja masuk ke sistem.</p>
                     </div>
-                    <button class="px-6 py-3 bg-indigo-600 text-white rounded-2xl text-sm font-bold flex items-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95">
+                    <button onclick="window.location.href='{{ route('reservations.create') }}'" class="px-6 py-3 bg-indigo-600 text-white rounded-2xl text-sm font-bold flex items-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
                         </svg>

@@ -14,7 +14,8 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-12 px-4 md:px-8">
+    @include('partials.header')
+    <div class="min-h-screen pt-24 px-4 md:px-8">
         <div class="max-w-3xl mx-auto">
             
             <div class="mb-8">

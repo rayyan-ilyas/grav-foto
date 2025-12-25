@@ -15,6 +15,9 @@ class PhotoPackage extends Model
         'price',
         'duration_minutes',
         'is_active',
+        'location',
+        'category',
+        'subcategory',
     ];
 
     protected $casts = [

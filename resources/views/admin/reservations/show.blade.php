@@ -14,8 +14,10 @@
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B]">
-    <div class="min-h-screen py-10 px-4 md:px-8">
-        <div class="max-w-6xl mx-auto">
+    <div class="min-h-screen">
+        @include('admin.partials.header')
+
+        <div class="max-w-6xl mx-auto py-10 px-4 md:px-8">
             <div class="mb-8">
                 <a href="{{ route('admin.reservations.index') }}" class="inline-flex items-center text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-all group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,6 +73,9 @@
                             <div class="space-y-1">
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Paket Pilihan</p>
                                 <p class="text-base font-bold text-indigo-600">{{ $reservation->photoPackage->name }}</p>
+                                @if($reservation->photoPackage->category)
+                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">{{ $reservation->photoPackage->category }}</p>
+                                @endif
                             </div>
                             <div class="space-y-1">
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Jadwal Foto</p>
